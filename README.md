@@ -73,14 +73,14 @@ utworzonym pliku import do pliku `P24.h`:
 ```swift
 #import "P24.h"
 ```
-[quote]
-# Uwaga
-Biblioteka ma zaszyte pułapki antydebuggerowe, dlatego korzystając z metod biblioteki należy mieć wyłączony „Debug Executable”.
-[/quote]
+
+**UWAGA!**
+
+ > Biblioteka ma zaszyte pułapki antydebuggerowe, dlatego korzystając z metod biblioteki należy mieć wyłączony „Debug Executable”.
 
 ## 2. Wywołanie transakcji trnDirect
 
-W tym celu należy ustawić parametry transakcji korzystając z klasy `P24TransactionParams`, podając Merchant Id i klucz do CRC:
+W tym celu należy ustawić parametry transakcji korzystając z klasy `P24TransactionParams`, podając Merchant Id i klucz do CRC:
 
 ```swift
 let transactionParams = P24TransactionParams();
@@ -113,19 +113,19 @@ transactionParams.shipping = 0;
 
 ```
 
-Następnie stworzyć obiekt z parametrami wywołania transakcji, odpowiedni dla danej metody:
+Następnie stworzyć obiekt z parametrami wywołania transakcji, odpowiedni dla danej metody:
 
 ```swift
 let params = P24TrnDirectParams.init(transactionParams: transactionParams)!
 ```
 
-Opcjonalne można ustawić wywołanie transakcji na serwer Sandbox:
+Opcjonalne można ustawić wywołanie transakcji na serwer Sandbox:
 
 ```swift
 params.sandbox = true;
 ```
 
-Również opcjonalne można dodać ustawienia zachowania biblioteki dla stron banków (style mobile na stronach banków – domyślnie włączone, czy biblioteka ma zapamiętywać logi i hasło do banków):
+Również opcjonalne można dodać ustawienia zachowania biblioteki dla stron banków (style mobile na stronach banków – domyślnie włączone, czy biblioteka ma zapamiętywać logi i hasło do banków):
 
 ```swift
 let settingsParams = new P24SettingsParams();
@@ -140,7 +140,7 @@ Mając gotowe obiekty konfiguracyjne możemy przystąpić do wywołania `ViewCon
 P24.startTrnDirect(params, in: parentViewController, delegate: p24TransferDelegate)
 ```
 
-Aby obsłużyć rezultat transakcji należy przekazać delegat nasłuchujący wywołania odpowiedniej metody wyniku:
+Aby obsłużyć rezultat transakcji należy przekazać delegat nasłuchujący wywołania odpowiedniej metody wyniku:
 
 ```swift
 func p24TransferOnSuccess() {
@@ -156,11 +156,11 @@ func p24Transfer(onError errorCode: String!) {
 }
 ```
 
-`TransferViewController` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po wywołaniu metody `p24TransferOnSuccess` aplikacja powinna odpytać własny backend o status transakcji.
+`TransferViewController` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po wywołaniu metody `p24TransferOnSuccess` aplikacja powinna odpytać własny backend o status transakcji.
 
 ## 3. Wywołanie transakcji trnRequest
 
-Podczas rejestracji transakcji metodą "trnRegister" należy podać parametr `p24_mobile_lib=1`, dzięki czemu system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
+Podczas rejestracji transakcji metodą "trnRegister" należy podać parametr `p24_mobile_lib=1`, dzięki czemu system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
 
 **UWAGA!**
 
@@ -175,7 +175,7 @@ dana metoda płatności, należy ustawić ją w tym parametrze przy rejestracji
 - `p24_url_status` - adres, który zostanie wykorzystany do weryfikacji transakcji przez serwer partnera po zakończeniu procesu płatności w bibliotece mobilnej
 
 
-Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox oraz konfigurację banków:
+Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox oraz konfigurację banków:
 
 ```swift
 let params = P24TrnRequestParams.init(token: token)!
@@ -183,34 +183,34 @@ params.sandbox = sandnoxSwitch.isOn
 params.settings = settings
 ```
 
-Następnie mając gotową konfugurację należy uruchomić `ViewControler`, do którego przekazujemy parametry oraz delegata:
+Następnie mając gotową konfugurację należy uruchomić `ViewControler`, do którego przekazujemy parametry oraz delegata:
 
 ```swift
 P24.startTrnRequest(params, in: parentViewController, delegate: p24TransferDelegate)
 
 ```
 
-Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
+Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
 ## 4. Wywołanie transakcji Ekspres
 
-Należy ustawić parametry transakcji podając url uzyskany podczas rejestracji transakcji w systemie Ekspres. Transakcja musi być zarejestrowana jako mobilna.
+Należy ustawić parametry transakcji podając url uzyskany podczas rejestracji transakcji w systemie Ekspres. Transakcja musi być zarejestrowana jako mobilna.
 
 ```swift
 let params = P24ExpressParams.init(url: url);
 ```
 
-Następnie wywołać `ViewControler`:
+Następnie wywołać `ViewControler`:
 
 ```swift
 P24.startExpress(params, in: parentViewController, delegate: p24TransferDelegate);
 ```
 
-Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
+Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
 ## 5. Wywołanie transakcji z Pasażem 2.0
 
-Należy ustawić parametry transakcji identycznie jak dla wywołania "trnDirect", dodając odpowiednio przygotowany obiekt koszyka:
+Należy ustawić parametry transakcji identycznie jak dla wywołania "trnDirect", dodając odpowiednio przygotowany obiekt koszyka:
 
 ```swift
 let cart = P24PassageCart()
