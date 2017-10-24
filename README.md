@@ -1,61 +1,50 @@
-# Dokumentacja biblioteki Przelewy24 - iOS
+# Przelewy24 library documentation - iOS
 
-Ogólne informacje o działaniu bibliotek mobilnych w systemie Przelewy24 znajdziesz pod adresem:
-
+For general information on the operation of Przelewy24 mobile libraries, visit:
 - [https://github.com/przelewy24/p24-mobile-lib-doc](https://github.com/przelewy24/p24-mobile-lib-doc)
 
-## 1. Konfiguracja projektu
+## 1. Project configuration
 
-W ustawieniach projektu Xcode należy ustawić „iOS Deployment Target” (zakładka „Info”
-ustawień projektu) na wersję 8.0 lub nowszą. Wersja 8.0 to minimalna wersja systemu iOS
-wymagana do poprawnego działania biblioteki. Konfiguracja jest identyczna dla projektu
-Objective-C i Swift.
+In project Xcode settings set „iOS Deployment Target” ( „Info” project settings bookmark) to version 8.0 or newer. Version 8.0 is the minimum requirement for the library to work properly with the iOS. The configuration is the same as in the case of Objective-C and Swift.
 
-### Dodawanie zależności
+### Adding dependencies
 
-Należy dodać pliki biblioteki (`libP24.a`, `P24.h`) do projektu. W tym celu należy:
+Library files(`libP24.a`, `P24.h`) should be added to the project. In order to add them, perform the following:
 
-- wybrać w Xcode „File → Add Files To”
-- wybrać katalog zawierający bibliotekę (katalog lib)
-- zaznaczyć opcję „Copy items into destination folder (if needed)”
-- zaznaczyć opcję „Create groups for any added folders”
-- w polu „Add to targets” wybrać wszystkie elementy, do których ma zostać dodana
-biblioteka
+- select „File → Add Files To” in Xcode
+- select the folder containing  the library (katalog lib)
+- select option „Copy items into destination folder (if needed)”
+- select option „Create groups for any added folders”
+- in the field „Add to targets” select all the elements to which a library can be added
 
-Należy upewnić się, czy ustawienia Targetów zostały poprawnie zaktualizowane. Plik `libP24.a`
-powinien zostać automatycznie dopisany w polu „Link Binary With Libraries” w zakładce
-„Build Phases”. W tym celu należy:
+Make sure that the Target settings have been updated properly. File `libP24.a`
+should be added automatically in the field „Link Binary With Libraries”, bookmark „Build Phases”. In order to add it, perform the following:
 
-- wybrać projekt w “Project Navigator”
-- wybrać Target, w którym ma być używana biblioteka
-- wybrać zakładkę “Build Phases”
-- wybrać sekcję “Link Binary With Libraries”
-- jeżeli plik `libP24.a` nie znajduje się na liście, należy przeciągnąć go z okna “Project
-Navigator”
-- powtórzyć powyższe kroki dla wszystkich Targetów, w których ma być wykorzystywana
-biblioteka
+- select project in “Project Navigator”
+- select the Target in which the library is to be used
+- select bookmark “Build Phases”
+- select section “Link Binary With Libraries”
+- if file`libP24.a` is not on the list, drag it from the “Project Navigator” window
+- repeat the steps above for all the Targets in which a library is to be used
 
-Należy dodać do Targetu wymagane biblioteki systemowe. Wymagane są następujące
-biblioteki:
+The following libraries are required and must be added to the Target:
 
 - Security.Framework
 - UIKit.Framework
 - Foundation.Framework
 - libz
 
-Biblioteki te należy dodać do sekcji „Link Binary With Libraries” w zakładce „Build Phases”. Należy wykonać to dla każdego Targetu, w którym będzie wykorzystywana biblioteka.
+The above libraries must be added in section „Link Binary With Libraries”, bookmark „Build Phases”. The operation must be performed for each Target in which a library is to  be used.
 
-### Przygotowanie projektu
+### Preparation of project
 
-Należy dodać flagi „-ObjC” i „-lstdc++” w polu „Other Linker Flags” w ustawieniach Targetu. W tym celu należy:
+Add flags „-ObjC” i „-lstdc++” in field „Other Linker Flags” in Target settings. In order to ad them, perform the following:
 
-- wybrać zakładkę „Build Settings” w ustawieniach Targetu
-- ustawić wartość pola „Other Linker Flags” na „-ObjC -lstdc++”. Pole „Other
-Linker Flags” znajduje się w sekcji „Linking”
-- powyższe kroki należy powtórzyć dla każdego Targetu, w którym biblioteka będzie
-wykorzystywana
+- select bookmark „Build Settings” in Target settings
+- set field value „Other Linker Flags” to „-ObjC -lstdc++”. Field „Other Linker Flags” is in the „Linking” section
+- The steps above must be performed for each Target in which a library is to  be used.
 
-Należy dodać poniższe ustawienie do pliku konfiguracyjnego `Info.plist` aplikacji:
+Add the setting below to the configurational file `Info.plist`  of the application:
 
 ```xml
 <key>NSAppTransportSecurity</key>
@@ -65,22 +54,20 @@ Należy dodać poniższe ustawienie do pliku konfiguracyjnego `Info.plist` aplik
 </dict>
 ```
 
-Dla aplikacji w języku Swift dodać do projektu plik `{PROJECT-NAME}-Bridging-Header.h`. W
-zakładce „Build Settings” projektu w polu „Objective-C Bridging Header” wpisać ścieżkę do
-utworzonego pliku (np. `{PROJECT-NAME}/{PROJECT-NAME}-Bridging-Header.h`). Wpisać w
-utworzonym pliku import do pliku `P24.h`:
+For applications in Swift, add file  `{PROJECT-NAME}-Bridging-Header.h` to the project. In the project bookmark „Build Settings”, field „Objective-C Bridging Header”, enter the access path to the created file  (e.g.  `{PROJECT-NAME}/{PROJECT-NAME}-Bridging-Header.h`). WIn the created file enter import to file `P24.h`:
 
 ```swift
 #import "P24.h"
 ```
 
-**UWAGA!**
+**NOTE!**
 
- > Biblioteka ma zaszyte pułapki antydebuggerowe, dlatego korzystając z metod biblioteki należy mieć wyłączony „Debug Executable”.
+ > The library contains anti-debug traps, so when using the library methods make sure the  „Debug Executable” is off.
 
-## 2. Wywołanie transakcji trnDirect
+## 2. trnDirect transaction call
 
-W tym celu należy ustawić parametry transakcji korzystając z klasy `P24TransactionParams`, podając Merchant Id i klucz do CRC:
+In order to call the transaction, the following parameters must be set using the `P24TransactionParams`, class and providing the Merchant ID and the CRC key:
+
 
 ```swift
 let transactionParams = P24TransactionParams();
@@ -101,7 +88,7 @@ transactionParams.desc = "test payment description";
 
 ```
 
-Parametry opcjonalne:
+Optional parameters:
 
 ```swift
 transactionParams.method = XXX;
@@ -113,19 +100,19 @@ transactionParams.shipping = 0;
 
 ```
 
-Następnie stworzyć obiekt z parametrami wywołania transakcji, odpowiedni dla danej metody:
+Next, an object with the transaction call parameters should be created that will be applicable to the specific method:
 
 ```swift
 let params = P24TrnDirectParams.init(transactionParams: transactionParams)!
 ```
 
-Opcjonalne można ustawić wywołanie transakcji na serwer Sandbox:
+Optionally, the transaction call may be set at the Sandbox server:
 
 ```swift
 params.sandbox = true;
 ```
 
-Również opcjonalne można dodać ustawienia zachowania biblioteki dla stron banków (style mobile na stronach banków – domyślnie włączone, czy biblioteka ma zapamiętywać logi i hasło do banków):
+Yet another option is to add saved library settings for bank websites (mobile styles at the banks’ websites – turned on by default, Should the library remember logins and passwords?, Should the library automatically paste sms passwords to the transaction confirmation form at the bank):
 
 ```swift
 let settingsParams = new P24SettingsParams();
@@ -134,13 +121,13 @@ settingsParams.setSaveBankCredential = true;
 params.settings = settingsParams;
 ```
 
-Mając gotowe obiekty konfiguracyjne możemy przystąpić do wywołania `ViewController` dla transakcji. Uruchomienie wygląda następująco:
+With the configurational objects complete, one may proceed to call `ViewController`  for the transaction. The initiation looks as follows:
 
 ```swift
 P24.startTrnDirect(params, in: parentViewController, delegate: p24TransferDelegate)
 ```
 
-Aby obsłużyć rezultat transakcji należy przekazać delegat nasłuchujący wywołania odpowiedniej metody wyniku:
+In order to serve the transaction result, a relevant result method event listener must be transferred:
 
 ```swift
 func p24TransferOnSuccess() {
@@ -156,26 +143,20 @@ func p24Transfer(onError errorCode: String!) {
 }
 ```
 
-`TransferViewController` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po wywołaniu metody `p24TransferOnSuccess` aplikacja powinna odpytać własny backend o status transakcji.
+`TransferViewController` yields only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `p24TransferOnSuccess` method is called, the application should inquire its own backend about the transaction status.
 
-## 3. Wywołanie transakcji trnRequest
+## 3. trnRequest transaction call
 
-Podczas rejestracji transakcji metodą "trnRegister" należy podać parametr `p24_mobile_lib=1`, dzięki czemu system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
+During the registration with the "trnRegister" method, parameter `p24_mobile_lib=1`should be provided, which allows Przelewy24 to classify the transaction as a mobile transaction. A Token registered without this parameter will not work in the mobile application (an error will appear upon return to the bank and the library file will not detect payment completion).
 
-**UWAGA!**
+**NOTE!**
 
- > Rejestrując transakcję, która będzie wykonana w bibliotece mobilnej należy
-pamiętać o dodatkowych parametrach:
-- `p24_channel` – jeżeli nie będzie ustawiony, to domyślnie w bibliotece pojawią się
-formy płatności „przelew tradycyjny” i „użyj przedpłatę”, które są niepotrzebne przy płatności mobilnej. Aby wyłączyć te opcje należy ustawić w tym parametrze flagi nie
-uwzględniające tych form (np. wartość 3 – przelewy i karty, domyślnie ustawione w
-bibliotece przy wejściu bezpośrednio z parametrami)
-- `p24_method` – jeżeli w bibliotece dla danej transakcji ma być ustawiona domyślnie
-dana metoda płatności, należy ustawić ją w tym parametrze przy rejestracji
-- `p24_url_status` - adres, który zostanie wykorzystany do weryfikacji transakcji przez serwer partnera po zakończeniu procesu płatności w bibliotece mobilnej
+ > When registering a transaction which is to be carried out in a mobile library, remember about the additional parameters:
+- `p24_channel` – unless set, the library will feature the payment options „traditional transfer” and „use prepayment”, which are unnecessary in case of mobile payments. In order to deactivate them, use flags that disregard these forms (e.g. value 3 – payments and cards, default entry setting, directly with parameters)
+- `p24_method` – if a given transaction in the library is to have a specific, preset method of payment, this method must be selected during the registration
+- `p24_url_status` - the address to be used for transaction verification by the partner’s server once the payment process in the mobile library is finished
 
-
-Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox oraz konfigurację banków:
+The transaction parameters must be set using the token of a transaction registered earlier. Alternatively, the sandbox server and bank configuration may be set:
 
 ```swift
 let params = P24TrnRequestParams.init(token: token)!
@@ -183,34 +164,34 @@ params.sandbox = sandnoxSwitch.isOn
 params.settings = settings
 ```
 
-Następnie mając gotową konfugurację należy uruchomić `ViewControler`, do którego przekazujemy parametry oraz delegata:
+Next, with the configuration ready, run `ViewControler`to which the parameters and the delegate are to be transferred:
 
 ```swift
 P24.startTrnRequest(params, in: parentViewController, delegate: p24TransferDelegate)
 
 ```
 
-Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
+The transaction result should be served in the same way as in the case of "trnDirect".
 
-## 4. Wywołanie transakcji Ekspres
+## 4. Express transaction call
 
-Należy ustawić parametry transakcji podając url uzyskany podczas rejestracji transakcji w systemie Ekspres. Transakcja musi być zarejestrowana jako mobilna.
+The transaction parameters must be set using the url obtained during the registration of the transaction with Express. The transaction must be registered as mobile.
 
 ```swift
 let params = P24ExpressParams.init(url: url);
 ```
 
-Następnie wywołać `ViewControler`:
+Next, call `ViewControler`:
 
 ```swift
 P24.startExpress(params, in: parentViewController, delegate: p24TransferDelegate);
 ```
 
-Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
+The transaction result should be served in the same way as in the case of "trnDirect".
 
-## 5. Wywołanie transakcji z Pasażem 2.0
+## 5. Passage 2.0 transaction call
 
-Należy ustawić parametry transakcji identycznie jak dla wywołania "trnDirect", dodając odpowiednio przygotowany obiekt koszyka:
+The transaction parameters must be set in the same way as for “trnDirect”. A properly prepared cart object should be added:
 
 ```swift
 let cart = P24PassageCart()
@@ -230,4 +211,4 @@ cart.addItem(item)
 transactionParams.passageCart = cart;
 ```
 
-Wywołanie transakcji oraz odbieranie wyniku jest realizowane identycznie jak dla wywołania "trnDirect".
+The transaction call and result receipt are carried out in the same way as in the case of „trnDirect”.
