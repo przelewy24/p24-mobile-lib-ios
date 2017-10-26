@@ -1,276 +1,216 @@
-# Przelewy24 library documentation - Android
+# Dokumentacja biblioteki Przelewy24 - iOS
 
-For general information on the operation of Przelewy24 mobile libraries, visit:
+Ogólne informacje o działaniu bibliotek mobilnych w systemie Przelewy24 znajdziesz pod adresem:
 
 - [https://github.com/przelewy24/p24-mobile-lib-doc](https://github.com/przelewy24/p24-mobile-lib-doc)
 
-## 1. Project configuration
+## 1. Konfiguracja projektu
 
-The first step is to set the value `minSdkVersion=14` in file `build.gradle`
+W ustawieniach projektu Xcode należy ustawić „iOS Deployment Target” (zakładka „Info” ustawień projektu) na wersję 8.0 lub nowszą. Wersja 8.0 to minimalna wersja systemu iOS wymagana do poprawnego działania biblioteki. Konfiguracja jest identyczna dla projektu
+Objective-C i Swift.
 
-### Adding dependencies
+### Dodawanie zależności
 
-In the Android Studio environment, it is possible to add a library module by using the command: „File → New → New module...”. From the list „New module” select „Import .JAR or .AAR Package” and click „Next”. In the field „File name” provide access path to file `p24Lib.aar`. As a „Subproject name”, provide „p24Lib” and click „Finish”.
+Należy dodać pliki biblioteki (`libP24.a`, `P24.h`) do projektu. W tym celu należy:
 
-he next step is to add a dependency to the created library module by modifying the file `build.gradle` and placing the following entry in the section „dependencies”:
+- wybrać w Xcode „File → Add Files To”
+- wybrać katalog zawierający bibliotekę
+- zaznaczyć opcję „Copy items into destination folder (if needed)”
+- zaznaczyć opcję „Create groups for any added folders”
+- w polu „Add to targets” wybrać wszystkie elementy, do których ma zostać dodana biblioteka
 
-`compile project(':p24lib')`
+Należy upewnić się, czy ustawienia Targetów zostały poprawnie zaktualizowane. Plik `libP24.a` powinien zostać automatycznie dopisany w polu „Link Binary With Libraries” w zakładce „Build Phases”. W tym celu należy:
 
-Since the library uses the AppCompat v7 library, the following dependency must be added:
+- wybrać projekt w “Project Navigator”
+- wybrać Target, w którym ma być używana biblioteka
+- wybrać zakładkę “Build Phases”
+- wybrać sekcję “Link Binary With Libraries”
+- jeżeli plik `libP24.a` nie znajduje się na liście, należy przeciągnąć go z okna “Project Navigator”
+- powtórzyć powyższe kroki dla wszystkich Targetów, w których ma być wykorzystywana biblioteka
 
-`compile 'com.android.support:appcompat-v7:26.+'`
+Należy dodać do Targetu wymagane biblioteki systemowe. Wymagane są następujące biblioteki:
 
-Below is an example of a „dependencies” section:
+- Security.Framework
+- UIKit.Framework
+- Foundation.Framework
+- libz
 
-```gradle
+Biblioteki te należy dodać do sekcji „Link Binary With Libraries” w zakładce „Build Phases”. Należy wykonać to dla każdego Targetu, w którym będzie wykorzystywana biblioteka.
 
-dependencies {
-	//other dependencies
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile project(':p24Lib')
+### Przygotowanie projektu
+
+Należy dodać flagi „-ObjC” i „-lstdc++” w polu „Other Linker Flags” w ustawieniach Targetu. W tym celu należy:
+
+- wybrać zakładkę „Build Settings” w ustawieniach Targetu
+- ustawić wartość pola „Other Linker Flags” na „-ObjC -lstdc++”. Pole „Other Linker Flags” znajduje się w sekcji „Linking”
+- powyższe kroki należy powtórzyć dla każdego Targetu, w którym biblioteka będzie wykorzystywana
+
+Należy dodać poniższe ustawienie do pliku konfiguracyjnego `Info.plist` aplikacji:
+
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+ 	<key>NSAllowsArbitraryLoadsInWebContent</key>
+ 	<true/>
+</dict>
+```
+
+Dla aplikacji w języku Swift dodać do projektu plik `{PROJECT-NAME}-Bridging-Header.h`. W zakładce „Build Settings” projektu w polu „Objective-C Bridging Header” wpisać ścieżkę do utworzonego pliku (np. `{PROJECT-NAME}/{PROJECT-NAME}-Bridging-Header.h`). Wpisać w utworzonym pliku import do pliku `P24.h`:
+
+```swift
+#import "P24.h"
+```
+
+**UWAGA!**
+
+ > Biblioteka ma zaszyte pułapki antydebuggerowe, dlatego korzystając z metod biblioteki należy mieć wyłączone ustawienie „Debug Executable”.
+
+## 2. Wywołanie transakcji trnDirect
+
+W tym celu należy ustawić parametry transakcji korzystając z klasy `P24TransactionParams`, podając Merchant ID i klucz do CRC:
+
+```swift
+let transactionParams = P24TransactionParams();
+transactionParams.merchantId = XXXXXXX;
+transactionParams.crc = XXXXXXX;
+transactionParams.sessionId = XXXXXXX;
+transactionParams.address = "Test street";
+transactionParams.amount = 1;
+transactionParams.city = "Poznan";
+transactionParams.zip = "61-600";
+transactionParams.client = "John smith";
+transactionParams.country = "PL";
+transactionParams.language = "pl";
+transactionParams.currency = "PLN";
+transactionParams.email = "test@test.pl";
+transactionParams.phone = "1223134134";
+transactionParams.desc = "test payment description";
+
+```
+
+Parametry opcjonalne:
+
+```swift
+transactionParams.method = XXX;
+transactionParams.timeLimit = 30;
+transactionParams.channel = P24_CHANNEL_CARDS;
+transactionParams.urlStatus = "http://XXXXXX";
+transactionParams.transferLabel = "Test label";
+transactionParams.shipping = 0;
+
+```
+
+Następnie stworzyć obiekt z parametrami wywołania transakcji, odpowiedni dla danej metody:
+
+```swift
+let params = P24TrnDirectParams.init(transactionParams: transactionParams)!
+```
+
+Opcjonalne można ustawić wywołanie transakcji na serwer Sandbox:
+
+```swift
+params.sandbox = true;
+```
+
+Również opcjonalne można dodać ustawienia zachowania biblioteki dla stron banków (style mobile na stronach banków – domyślnie włączone, czy biblioteka ma zapamiętywać logi i hasło do banków):
+
+```swift
+let settingsParams = new P24SettingsParams();
+settingsParams.setEnableBanksRwd = true;
+settingsParams.setSaveBankCredential = true;
+params.settings = settingsParams;
+```
+
+Mając gotowe obiekty konfiguracyjne możemy przystąpić do wywołania `ViewController` dla transakcji. Uruchomienie wygląda następująco:
+
+```swift
+P24.startTrnDirect(params, in: parentViewController, delegate: p24TransferDelegate)
+```
+
+Aby obsłużyć rezultat transakcji należy przekazać delegat nasłuchujący wywołania odpowiedniej metody wyniku:
+
+```swift
+func p24TransferOnSuccess() {
+    //sucess
 }
 
-```
+func p24TransferOnCanceled() {
+    //canceled
+}
 
-### Definition of AndroidManifest file
-
-Add the following to `AndroidManifest.xml` file:
-
-```xml
-<uses-permission android:name="android.permission.INTERNET"/>
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-```
-
-In case the SMS code paste function is used, add also:
-
-```xml
-<uses-permission android:name="android.permission.RECEIVE_SMS"/>
-```
-
-Next, in `application` section, add `TransferActivity`:
-
-```xml
-<activity android:name=„pl.przelewy24.p24lib.transfer.TransferActivity"
-          android:configChanges="orientation|keyboard|keyboardHidden"
-          android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
-```
-
-and `PaymentSettingsActivity`:
-
-```xml
-<activity android:name="pl.przelewy24.p24lib.settings.PaymentSettingsActivity"
-          android:configChanges="orientation|keyboard|keyboardHidden"
-          android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
-```
-
-__All Activities in the library draw on the AppCompatActivity, which is why  „Theme.AppCompat.*” group styles as well as derivative styles should be used__
-
-n the case of default Activity settings, the WebView will get reloaded during the revolution of the library display screen, which may cause a return from the bank’s website to the list of payment forms and render further transaction processing impossible. In order to prevent the reloading of the library window, the following parameter must be set:
-
-```xml
-android:configChanges="orientation|keyboard|keyboardHidden"
-```
-Below is an example of an `AndroidManifext.xml` file:
-
-```xml
-
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.przelewy24.p24example"
-    android:versionCode="1"
-    android:versionName="1.0.0">
-
-	<!--other permissions-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!--optional-->
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-
-    <application >
-
-		<!--other activities-->
-
-        <activity android:name="pl.przelewy24.p24lib.transfer.TransferActivity"
-                  android:configChanges="keyboardHidden|orientation|keyboard|screenSize"
-                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
-
-        <activity android:name="pl.przelewy24.p24lib.settings.PaymentSettingsActivity"
-                  android:configChanges="keyboardHidden|orientation|keyboard|screenSize"
-                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
-
-    </application>
-
-</manifest>
-
-
-```
-
-## 2. trnDirect transaction call
-
-In order to call the transaction, the following parameters must be set using the builder class and providing the Merchant ID and the CRC key:
-
-```java
-TransactionParams transactionParams = new TransactionParams.Builder()
-           .merchantId(XXXXX)
-           .crc(XXXXXXXXXXXXX)
-           .sessionId(XXXXXXXXXXXXX)
-           .amount(1)
-           .currency("PLN")
-           .description("test payment description")
-           .email("test@test.pl")
-           .country("PL")
-           .client("John Smith")
-           .address("Test street")
-           .zip("60-600")
-           .city("Poznan")
-           .phone("1246423234")
-           .language("pl")
-           .build();
-```
-
-Optional parameters:
-
-```java
-builder.urlStatus("https://XXXXXX")
-       .method(25)
-       .timeLimit(90)
-       .channel(1)
-       .transferLabel("transfer label")
-       .shipping(0);
-```
-Next, an object with the transaction call parameters should be created that will be applicable to the specific method:
-
-```java
-TrnDirectParams params = TrnDirectParams.create(transactionParams);
-```
-
-Optionally, the transaction call may be set at the Sandbox server:
-
-```java
-params.setSandbox(true);
-```
-
-Yet another option is to add saved library settings for bank websites (mobile styles at the banks’ websites – turned on by default, Should the library remember logins and passwords?, Should the library automatically paste sms passwords to the transaction confirmation form at the bank):
-
-```java
-SettingsParams settingsParams = new SettingsParams();
-settingsParams.setEnableBanksRwd(true);
-settingsParams.setSaveBankCredentials(true);
-settingsParams.setReadSmsPasswords(true);
-params.setSettingsParams(settingsParams);
-```
-
-In case  `setReadSmsPasswords` is set as `true`, the following should be added to the manifest:
-
-```xml
-<uses-permission android:name="android.permission.RECEIVE_SMS"/>
-```
-
-With the configurational objects complete, one may proceed to call Activity for a transaction. The initiation looks as follows:
-
-```java
-Intent intent = TransferActivity.getIntentForTrnDirect(getApplicationContext(), params);
-activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
-```
-
-In order to serve the transaction result, one must modify `Activity.onActivityResult`:
-
-```java
-@Override
-protected void onActivityResult(int reqCode, int resCode, Intent data) {
-    super.onActivityResult(reqCode, resCode, data);
-    if (reqCode == TRANSACTION_REQUEST_CODE) {
-        if (resCode == RESULT_OK) {
-            TransferResult result = TransferActivity.parseResult(data);
-
-            switch (result) {
-                case SUCCESS:
-                    // success
-                    break;
-                case ERROR:
-                    //error
-                    break;
-            }
-
-        } else {
-            //cancel
-        }
-    }
+func p24Transfer(onError errorCode: String!) {
+    //error
 }
 ```
-`TransferActivity` yields only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `SUCCESS` status is obtained, the application should inquire its own backend about the transaction status.
+
+`TransferViewController` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po wywołaniu metody `p24TransferOnSuccess` aplikacja powinna odpytać własny backend o status transakcji.
+
+## 3. Wywołanie transakcji trnRequest
+
+Podczas rejestracji transakcji metodą "trnRegister" należy podać parametr `p24_mobile_lib=1`, dzięki czemu system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
+
+**UWAGA!**
+
+ > Rejestrując transakcję, która będzie wykonana w bibliotece mobilnej należy pamiętać o dodatkowych parametrach:
+- `p24_channel` – jeżeli nie będzie ustawiony, to domyślnie w bibliotece pojawią się formy płatności „przelew tradycyjny” i „użyj przedpłatę”, które są niepotrzebne przy płatności mobilnej. Aby wyłączyć te opcje należy ustawić w tym parametrze flagi nie uwzględniające tych form (np. wartość 3 – przelewy i karty, domyślnie ustawione w bibliotece przy wejściu bezpośrednio z parametrami)
+- `p24_method` – jeżeli w bibliotece dla danej transakcji ma być ustawiona domyślnie dana metoda płatności, należy ustawić ją w tym parametrze przy rejestracji
+- `p24_url_status` - adres, który zostanie wykorzystany do weryfikacji transakcji przez serwer partnera po zakończeniu procesu płatności w bibliotece mobilnej
 
 
-## 3. trnRequest transaction call
+Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox oraz konfigurację banków:
 
-During the registration with the "trnRegister" method, parameter p24_mobile_lib=1 should be provided, which allows Przelewy24 to classify the transaction as a mobile transaction. A Token registered without this parameter will not work in the mobile application (an error will appear upon return to the bank and the library file will not detect payment completion).
-
-**NOTE!**
-
- > When registering a transaction which is to be carried out in a mobile library, remember about the additional parameters:
-- `p24_channel` – unless set, the library will feature the payment options „traditional transfer” and „use prepayment”, which are unnecessary in case of mobile payments. In order to deactivate them, use flags that disregard these forms (e.g. value 3 – payments and cards, default entry setting, directly with parameters)
-- `p24_method` – if a given transaction in the library is to have a specific, preset method of payment, this method must be selected during the registration
-- `p24_url_status` - the address to be used for transaction verification by the partner’s server once the payment process in the mobile library is finished
-
-The transaction parameters must be set using the token of a transaction registered earlier. Alternatively, the sandbox server and bank configuration may be set:
-
-```java
-TrnRequestParams params = TrnRequestParams
-                      .create(„XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX”)
-                      .setSandbox(true)
-                      .setSettingsParams(settingsParams);
+```swift
+let params = P24TrnRequestParams.init(token: "XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX")!
+params.sandbox = true
+params.settings = settings
 ```
 
-Next, `Intent` should be created to call transaction `Activity` and run it:
+Następnie mając gotową konfugurację należy uruchomić `ViewControler`, do którego przekazujemy parametry oraz delegata:
 
-```java
-Intent intent = TransferActivity.getIntentForTrnRequest(getApplicationContext(), params);
-activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
+```swift
+P24.startTrnRequest(params, in: parentViewController, delegate: p24TransferDelegate)
+
 ```
 
-The transaction result should be served in the same way as in the case of "trnDirect".
+Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
-## 4. Express transaction call
+## 4. Wywołanie transakcji Ekspres
 
-The transaction parameters must be set using the url obtained during the registration of the transaction with Express. The transaction must be registered as mobile.
+Należy ustawić parametry transakcji podając url uzyskany podczas rejestracji transakcji w systemie Ekspres. Transakcja musi być zarejestrowana jako mobilna.
 
-```java
-ExpressParams params = ExpressParams.create(expresTransactionUrl);
+```swift
+let params = P24ExpressParams.init(url: url);
 ```
 
-Next, create Intent to call Activity and run it:
+Następnie wywołać `ViewControler`:
 
-```java
-Intent intent = TransferActivity.getIntentForExpress(getApplicationContext(), params);
-activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
+```swift
+P24.startExpress(params, in: parentViewController, delegate: p24TransferDelegate);
 ```
 
-The transaction result should be served in the same way as in the case of "trnDirect".
+Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
-## 5. Passage 2.0 transaction call
+## 5. Wywołanie transakcji z Pasażem 2.0
 
-The transaction parameters must be set in the same way as for "trnDirect". A properly prepared cart object should be added:
+Należy ustawić parametry transakcji identycznie jak dla wywołania "trnDirect", dodając odpowiednio przygotowany obiekt koszyka:
 
-```java
-PassageCart passageCart = PassageCart.create();
-PassageItem.Builder builder = new PassageItem.Builder()
-           .name("Product name 1")
-           .description("Product description 1")
-           .number(1)
-           .price(10)
-           .quantity(2)
-           .targetAmount(20)
-           .targetPosId(XXXXXX);
+```swift
+let cart = P24PassageCart()
 
-passageCart.addItem(builder.build());
+var item = P24PassageItem(name: "Product 1")!
+item.desc = "description 1"
+item.quantity = 1
+item.price = 100
+item.number = 1
+item.targetAmount = 100
+item.targetPosId = XXXXX
+
+cart.addItem(item)
 ```
 
-```java
-TransactionParams transactionParams = new TransactionParams.Builder()
-            ...
-           .passageCart(passageCart)
-           .build();
+```swift
+transactionParams.passageCart = cart;
 ```
 
-The transaction call and result parsing proceed in the same way as in the case of "trnDirect".
+Wywołanie transakcji oraz odbieranie wyniku jest realizowane identycznie jak dla wywołania "trnDirect".
+

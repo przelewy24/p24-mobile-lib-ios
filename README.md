@@ -9,16 +9,15 @@ In project Xcode settings set „iOS Deployment Target” ( „Info” project s
 
 ### Adding dependencies
 
-Library files(`libP24.a`, `P24.h`) should be added to the project. In order to add them, perform the following:
+Library files (`libP24.a`, `P24.h`) should be added to the project. In order to add them, perform the following:
 
 - select „File → Add Files To” in Xcode
-- select the folder containing  the library (katalog lib)
+- select the folder containing the library
 - select option „Copy items into destination folder (if needed)”
 - select option „Create groups for any added folders”
 - in the field „Add to targets” select all the elements to which a library can be added
 
-Make sure that the Target settings have been updated properly. File `libP24.a`
-should be added automatically in the field „Link Binary With Libraries”, bookmark „Build Phases”. In order to add it, perform the following:
+Make sure that the Target settings have been updated properly. File `libP24.a` should be added automatically in the field „Link Binary With Libraries”, bookmark „Build Phases”. In order to check that, perform the following:
 
 - select project in “Project Navigator”
 - select the Target in which the library is to be used
@@ -34,15 +33,15 @@ The following libraries are required and must be added to the Target:
 - Foundation.Framework
 - libz
 
-The above libraries must be added in section „Link Binary With Libraries”, bookmark „Build Phases”. The operation must be performed for each Target in which a library is to  be used.
+The above libraries must be added in section „Link Binary With Libraries”, bookmark „Build Phases”. The operation must be performed for each Target in which a library is to be used.
 
 ### Preparation of project
 
-Add flags „-ObjC” i „-lstdc++” in field „Other Linker Flags” in Target settings. In order to ad them, perform the following:
+Add flags „-ObjC” i „-lstdc++” in field „Other Linker Flags” in Target settings. In order to add them, perform the following:
 
 - select bookmark „Build Settings” in Target settings
 - set field value „Other Linker Flags” to „-ObjC -lstdc++”. Field „Other Linker Flags” is in the „Linking” section
-- The steps above must be performed for each Target in which a library is to  be used.
+- The steps above must be performed for each Target in which a library is to be used.
 
 Add the setting below to the configurational file `Info.plist`  of the application:
 
@@ -54,7 +53,7 @@ Add the setting below to the configurational file `Info.plist`  of the applicati
 </dict>
 ```
 
-For applications in Swift, add file  `{PROJECT-NAME}-Bridging-Header.h` to the project. In the project bookmark „Build Settings”, field „Objective-C Bridging Header”, enter the access path to the created file  (e.g.  `{PROJECT-NAME}/{PROJECT-NAME}-Bridging-Header.h`). WIn the created file enter import to file `P24.h`:
+For applications in Swift, add file `{PROJECT-NAME}-Bridging-Header.h` to the project. In the project bookmark „Build Settings”, field „Objective-C Bridging Header”, enter the access path to the created file  (e.g.  `{PROJECT-NAME}/{PROJECT-NAME}-Bridging-Header.h`). In the created file enter import to file `P24.h`:
 
 ```swift
 #import "P24.h"
@@ -62,7 +61,7 @@ For applications in Swift, add file  `{PROJECT-NAME}-Bridging-Header.h` to the p
 
 **NOTE!**
 
- > The library contains anti-debug traps, so when using the library methods make sure the  „Debug Executable” is off.
+ > The library contains anti-debug traps, so when using the library methods make sure the „Debug Executable” option is off.
 
 ## 2. trnDirect transaction call
 
@@ -112,7 +111,7 @@ Optionally, the transaction call may be set at the Sandbox server:
 params.sandbox = true;
 ```
 
-Yet another option is to add saved library settings for bank websites (mobile styles at the banks’ websites – turned on by default, Should the library remember logins and passwords?, Should the library automatically paste sms passwords to the transaction confirmation form at the bank):
+Yet another option is to add library settings for bank websites (mobile styles at the banks’ websites – turned on by default, should the library remember logins and passwords, should the library automatically paste sms passwords to the transaction confirmation form at the bank page):
 
 ```swift
 let settingsParams = new P24SettingsParams();
@@ -127,7 +126,7 @@ With the configurational objects complete, one may proceed to call `ViewControll
 P24.startTrnDirect(params, in: parentViewController, delegate: p24TransferDelegate)
 ```
 
-In order to serve the transaction result, a relevant result method event listener must be transferred:
+In order to serve the transaction result, a delegate must be provided:
 
 ```swift
 func p24TransferOnSuccess() {
@@ -143,7 +142,7 @@ func p24Transfer(onError errorCode: String!) {
 }
 ```
 
-`TransferViewController` yields only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `p24TransferOnSuccess` method is called, the application should inquire its own backend about the transaction status.
+`TransferViewController` returns only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `p24TransferOnSuccess` method is called, the application should call its own backend to check the transaction status.
 
 ## 3. trnRequest transaction call
 
@@ -156,15 +155,15 @@ During the registration with the "trnRegister" method, parameter `p24_mobile_lib
 - `p24_method` – if a given transaction in the library is to have a specific, preset method of payment, this method must be selected during the registration
 - `p24_url_status` - the address to be used for transaction verification by the partner’s server once the payment process in the mobile library is finished
 
-The transaction parameters must be set using the token of a transaction registered earlier. Alternatively, the sandbox server and bank configuration may be set:
+The transaction parameters must be set using the token of a transaction registered earlier. Optionally, the sandbox server and bank configuration may be set:
 
 ```swift
-let params = P24TrnRequestParams.init(token: token)!
-params.sandbox = sandnoxSwitch.isOn
+let params = P24TrnRequestParams.init(token: "XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX")!
+params.sandbox = true
 params.settings = settings
 ```
 
-Next, with the configuration ready, run `ViewControler`to which the parameters and the delegate are to be transferred:
+Next, with the configuration ready, run `ViewControler` to which the parameters and the delegate are to be transferred:
 
 ```swift
 P24.startTrnRequest(params, in: parentViewController, delegate: p24TransferDelegate)
@@ -202,7 +201,7 @@ item.quantity = 1
 item.price = 100
 item.number = 1
 item.targetAmount = 100
-item.targetPosId = 51987
+item.targetPosId = XXXXX
 
 cart.addItem(item)
 ```
@@ -212,3 +211,4 @@ transactionParams.passageCart = cart;
 ```
 
 The transaction call and result receipt are carried out in the same way as in the case of „trnDirect”.
+
