@@ -61,7 +61,7 @@ Dla aplikacji w języku Swift dodać do projektu plik `{PROJECT-NAME}-Bridging-H
 #import "P24.h"
 ```
 
-**UWAGA!**
+**UWAGA!!**
 
  > Biblioteka ma zaszyte pułapki antydebuggerowe, dlatego korzystając z metod biblioteki należy mieć wyłączone ustawienie „Debug Executable”.
 
