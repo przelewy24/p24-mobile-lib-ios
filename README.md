@@ -3,6 +3,9 @@
 For general information on the operation of Przelewy24 mobile libraries, visit:
 - [https://github.com/przelewy24/p24-mobile-lib-doc](https://github.com/przelewy24/p24-mobile-lib-doc)
 
+To see implementation example please check the example project:
+- [https://github.com/przelewy24/p24-mobile-lib-ios-example](https://github.com/przelewy24/p24-mobile-lib-ios-example)
+
 ## 1. Project configuration
 
 In project Xcode settings set „iOS Deployment Target” ( „Info” project settings bookmark) to version 8.0 or newer. Version 8.0 is the minimum requirement for the library to work properly with the iOS. The configuration is the same as in the case of Objective-C and Swift.

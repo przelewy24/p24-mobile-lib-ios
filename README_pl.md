@@ -4,6 +4,10 @@ Ogólne informacje o działaniu bibliotek mobilnych w systemie Przelewy24 znajdz
 
 - [https://github.com/przelewy24/p24-mobile-lib-doc](https://github.com/przelewy24/p24-mobile-lib-doc)
 
+Przykład implementacji biblioteki:
+
+- [https://github.com/przelewy24/p24-mobile-lib-ios-example](https://github.com/przelewy24/p24-mobile-lib-ios-example)
+
 ## 1. Konfiguracja projektu
 
 W ustawieniach projektu Xcode należy ustawić „iOS Deployment Target” (zakładka „Info” ustawień projektu) na wersję 8.0 lub nowszą. Wersja 8.0 to minimalna wersja systemu iOS wymagana do poprawnego działania biblioteki. Konfiguracja jest identyczna dla projektu
