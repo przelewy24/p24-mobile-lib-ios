@@ -69,6 +69,19 @@ Dla aplikacji w języku Swift dodać do projektu plik `{PROJECT-NAME}-Bridging-H
 
  > Biblioteka ma zaszyte pułapki antydebuggerowe, dlatego korzystając z metod biblioteki należy mieć wyłączone ustawienie „Debug Executable”.
 
+### SSL Pinning
+
+Biblioteka posiada mechanizm SSL Pinningu, który można aktywować globalnie dla wywołań webview.
+Aby funkcja działała należy upewnić się, że przed wywołaniem jakiejkolwiek metody biblioteki jest ona odpowiedno zkonfigurowana. Przykład:
+
+```swift
+P24SdkConfig.setCertificatePinningEnabled(true);
+```
+**UWAGA!!**
+
+ > Aktywując SSL Pinning należy mieć na uwadze, że zaszyte w bibliotece certyfikaty mają swój czas ważności. Gdy będzie się zbliżał czas ich wygaśnięcia, Przelewy24 poinformują o tym oraz udostępnią odpowiednią aktualizację.
+ 
+
 ## 2. Wywołanie transakcji trnDirect
 
 W tym celu należy ustawić parametry transakcji korzystając z klasy `P24TransactionParams`, podając Merchant ID i klucz do CRC:
@@ -116,15 +129,6 @@ Opcjonalne można ustawić wywołanie transakcji na serwer Sandbox:
 params.sandbox = true;
 ```
 
-Również opcjonalne można dodać ustawienia zachowania biblioteki dla stron banków (style mobile na stronach banków – domyślnie włączone, czy biblioteka ma zapamiętywać logi i hasło do banków):
-
-```swift
-let settingsParams = new P24SettingsParams();
-settingsParams.setEnableBanksRwd = true;
-settingsParams.setSaveBankCredential = true;
-params.settings = settingsParams;
-```
-
 Mając gotowe obiekty konfiguracyjne możemy przystąpić do wywołania `ViewController` dla transakcji. Uruchomienie wygląda następująco:
 
 ```swift
@@ -166,12 +170,11 @@ Dzięki tym parametrom system Przelewy24 będzie wiedział że powinien traktowa
 - `p24_url_status` - adres, który zostanie wykorzystany do weryfikacji transakcji przez serwer partnera po zakończeniu procesu płatności w bibliotece mobilnej
 
 
-Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox oraz konfigurację banków:
+Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox:
 
 ```swift
 let params = P24TrnRequestParams.init(token: "XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX")!
 params.sandbox = true
-params.settings = settings
 ```
 
 Następnie mając gotową konfugurację należy uruchomić `ViewControler`, do którego przekazujemy parametry oraz delegata:

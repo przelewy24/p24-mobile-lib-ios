@@ -66,6 +66,19 @@ For applications in Swift, add file `{PROJECT-NAME}-Bridging-Header.h` to the pr
 
  > The library contains anti-debug traps, so when using the library methods make sure the „Debug Executable” option is off.
 
+### SSL Pinning
+
+The library has a Pinning SSL mechanism that can be activated globally for webview calls.
+If you want use this feature, please make sure configuration is setup before any library methods calls. Example:
+
+```swift
+P24SdkConfig.setCertificatePinningEnabled(true);
+```
+
+**NOTE!!**
+
+ > When activating SSL Pinning, keep in mind that the certificates embedded in the library have their validity time. Before time of their expiry, Przelewy24 will be sending out appropriate information and updating
+
 ## 2. trnDirect transaction call
 
 In order to call the transaction, the following parameters must be set using the `P24TransactionParams`, class and providing the Merchant ID and the CRC key:
@@ -114,15 +127,6 @@ Optionally, the transaction call may be set at the Sandbox server:
 params.sandbox = true;
 ```
 
-Yet another option is to add library settings for bank websites (mobile styles at the banks’ websites – turned on by default, should the library remember logins and passwords, should the library automatically paste sms passwords to the transaction confirmation form at the bank page):
-
-```swift
-let settingsParams = new P24SettingsParams();
-settingsParams.setEnableBanksRwd = true;
-settingsParams.setSaveBankCredential = true;
-params.settings = settingsParams;
-```
-
 With the configurational objects complete, one may proceed to call `ViewController`  for the transaction. The initiation looks as follows:
 
 ```swift
@@ -162,12 +166,11 @@ This parameters  allows Przelewy24 to classify the transaction as a mobile trans
 - `p24_method` – if a given transaction in the library is to have a specific, preset method of payment, this method must be selected during the registration
 - `p24_url_status` - the address to be used for transaction verification by the partner’s server once the payment process in the mobile library is finished
 
-The transaction parameters must be set using the token of a transaction registered earlier. Optionally, the sandbox server and bank configuration may be set:
+The transaction parameters must be set using the token of a transaction registered earlier. Optionally, the sandbox server:
 
 ```swift
 let params = P24TrnRequestParams.init(token: "XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX")!
 params.sandbox = true
-params.settings = settings
 ```
 
 Next, with the configuration ready, run `ViewControler` to which the parameters and the delegate are to be transferred:
