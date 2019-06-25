@@ -221,3 +221,51 @@ transactionParams.passageCart = cart;
 ```
 
 The transaction call and result receipt are carried out in the same way as in the case of „trnDirect”.
+
+## 6. Apple Pay
+
+Before enabling this function, you must have a properly configured project and an Apple Developer account:
+
+[https://developer.apple.com/documentation/passkit/apple_pay/](https://developer.apple.com/documentation/passkit/apple_pay/)
+
+To execute an Apple Pay transaction, you must provide the appropriate parameters:
+
+```swift
+
+let params = P24ApplePayParams.init(
+    appleMerchantId: "merchant.Przelewy24.sandbox",
+    amount: 1,
+    currency: "PLN",
+    registrar: self
+)
+
+P24.startApplePay(params, in: self, delegate: self)
+```
+
+**UWAGA**
+
+>*The parameter `appleMerchantId` is the ID obtained from the Apple Developer console. You should pay attention that this is not the same as the `merchant_id` from Przelewy24.*
+
+The `P24ApplePayTransactionRegistrar` protocol allows you to implement the exchange of a token received with Apple Pay into a P24 transaction token. When calling the `exchange` method, communicate with the P24 servers, pass the Apple Pay payment token as the parameter `p24_method_ref_id`, and then return the transaction token to the library by calling the `onRegisterSuccess` callback method.
+
+```swift
+func exchange(_ applePayToken: String!, delegate: P24ApplePayTransactionRegistrarDelegate!) {
+    delegate.onRegisterSuccess("P24_TRANSACTION_TOKEN")
+}
+```
+
+To handle transaction result you need to implement `P24ApplePayDelegate`:
+
+```swift
+func p24ApplePayOnSuccess() {
+    // handle success
+}
+
+func p24ApplePayOnCanceled() {
+    // handle transaction canceled
+}
+
+func p24ApplePay(onError errorCode: String!) {
+    // handle transaction error
+}
+```
