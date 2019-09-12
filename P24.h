@@ -9,9 +9,49 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@interface P24CardData : NSObject
+
+@property (nonatomic, copy, readonly) NSString * number;
+@property (nonatomic, assign) int month;
+@property (nonatomic, assign) int year;
+@property (nonatomic, copy, readonly) NSString * cvv;
+
+
+- (id) initWithCardNumber:(NSString *) number month:(int) month year:(int) year cvv:(NSString *) cvv;
+
+@end
+
+@interface P24RegisterCardParams : NSObject
+
+@property (nonatomic, copy, readonly) NSString * url;
+@property (nonatomic, copy, readonly) P24CardData * data;
+
+- (id) initWithUrl:(NSString *) url;
+- (id) initWithUrl:(NSString *) url data:(P24CardData *) data;
+
+@end
+
+@interface P24RegisterCardResult : NSObject
+
+@property (nonatomic, assign, readonly) NSString * cardToken;
+
+- (id) initWithCardToken:(NSString*) cardToken;
+
+@end
+
+
+@protocol P24RegisterCardDelegate <NSObject>
+
+- (void) p24RegisterCardSuccess:(P24RegisterCardResult *) registerCardResult;
+- (void) p24RegisterCardCancel;
+- (void) p24RegisterCardError:(NSString*) errorCode;
+
+@end
+
 @interface P24 : NSObject
 
 + (NSString *) sdkVersion;
++ (void)startRegisterCard:(P24RegisterCardParams *)params inViewController:(UIViewController *)viewController delegate:(id<P24RegisterCardDelegate>) delegate;
 
 @end
 
