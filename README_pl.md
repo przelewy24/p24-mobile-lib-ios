@@ -38,6 +38,8 @@ Należy dodać do Targetu wymagane biblioteki systemowe. Wymagane są następuj�
 - UIKit.Framework
 - Foundation.Framework
 - libz
+- WebKit
+- PassKit
 
 Biblioteki te należy dodać do sekcji „Link Binary With Libraries” w zakładce „Build Phases”. Należy wykonać to dla każdego Targetu, w którym będzie wykorzystywana biblioteka.
 

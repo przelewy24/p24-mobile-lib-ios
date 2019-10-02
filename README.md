@@ -35,6 +35,8 @@ The following libraries are required and must be added to the Target:
 - UIKit.Framework
 - Foundation.Framework
 - libz
+- WebKit
+- PassKit
 
 The above libraries must be added in section „Link Binary With Libraries”, bookmark „Build Phases”. The operation must be performed for each Target in which a library is to be used.
 
@@ -242,7 +244,7 @@ let params = P24ApplePayParams.init(
 P24.startApplePay(params, in: self, delegate: self)
 ```
 
-**UWAGA**
+**WARNING**
 
 >*The parameter `appleMerchantId` is the ID obtained from the Apple Developer console. You should pay attention that this is not the same as the `merchant_id` from Przelewy24.*
 
