@@ -1,4 +1,5 @@
 # Dokumentacja biblioteki Przelewy24 - iOS
+![](https://raw.githubusercontent.com/przelewy24/p24-mobile-lib-ios/master/libVerImg.svg?sanitize=true)
 
 Ogólne informacje o działaniu bibliotek mobilnych w systemie Przelewy24 znajdziesz pod adresem:
 

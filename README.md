@@ -1,4 +1,5 @@
 # Przelewy24 library documentation - iOS
+![](https://raw.githubusercontent.com/przelewy24/p24-mobile-lib-ios/master/libVerImg.svg?sanitize=true)
 
 For general information on the operation of Przelewy24 mobile libraries, visit:
 - [https://github.com/przelewy24/p24-mobile-lib-doc](https://github.com/przelewy24/p24-mobile-lib-doc)
