@@ -1,8 +1,5 @@
-### Version 3.0.4
-- fixed some payment methods
-- bitcode version
+### Version 3.4.4
+- Add isExitOnBackButtonEnabled flag
 
-### Version 3.0.3
-- New version of library API
-- Add Passage 2.0
-- Add Ekspres
+### Verstion 3.4.5
+- Fix bug with ApplePay modal dismiss
