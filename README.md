@@ -239,10 +239,32 @@ let params = P24ApplePayParams.init(
     appleMerchantId: "merchant.Przelewy24.sandbox",
     amount: 1,
     currency: "PLN",
+    description: "Test transaction",
     registrar: self
 )
 
 P24.startApplePay(params, in: self, delegate: self)
+```
+
+Alternatively, in P24ApplePayParams object instead of amount and description can be passed objects list of type `PaymentItem`:
+
+```swift
+let params = P24ApplePayParams.init(
+    items: [exampleItem, exampleItem2],
+    currency: "PLN",
+    appleMerchantId: "merchant.Przelewy24.sandbox",
+    registrar: self
+)
+
+P24.startApplePay(params, in: self, delegate: self)
+```
+
+Object `PaymentItem` consists of `itemDescription` and `amount` fields:
+
+```swift
+let exampleItem = PaymentItem()
+exampleItem.amount = 10
+exampleItem.itemDescription = "First item"
 ```
 
 **WARNING**

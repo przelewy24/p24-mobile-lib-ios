@@ -238,15 +238,36 @@ Przed włączeniem tej funkcji należy posiadać odpowiednio skonfigurowany proj
 By wywołać transakcję Apple Pay należy podać odpowiednie parametry:
 
 ```swift
-
 let params = P24ApplePayParams.init(
     appleMerchantId: "merchant.Przelewy24.sandbox",
     amount: 1,
     currency: "PLN",
+    description: "Test transaction",
     registrar: self
 )
 
 P24.startApplePay(params, in: self, delegate: self)
+```
+
+Alternatywnie, w obiekcie P24ApplePayParams zamiast kwoty i opisu może zostać przekazana lista obiektów typu `PaymentItem`:
+
+```swift
+let params = P24ApplePayParams.init(
+    items: [exampleItem, exampleItem2],
+    currency: "PLN",
+    appleMerchantId: "merchant.Przelewy24.sandbox",
+    registrar: self
+)
+
+P24.startApplePay(params, in: self, delegate: self)
+```
+
+Obiekt `PaymentItem` składa się z pola `itemDescription` oraz `amount`:
+
+```swift
+let exampleItem = PaymentItem()
+exampleItem.amount = 10
+exampleItem.itemDescription = "First item"
 ```
 
 **UWAGA**
