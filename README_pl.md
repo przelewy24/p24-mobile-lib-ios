@@ -84,6 +84,13 @@ P24SdkConfig.setCertificatePinningEnabled(true);
 
  > Aktywując SSL Pinning należy mieć na uwadze, że zaszyte w bibliotece certyfikaty mają swój czas ważności. Gdy będzie się zbliżał czas ich wygaśnięcia, Przelewy24 poinformują o tym oraz udostępnią odpowiednią aktualizację.
  
+### Płatność podzielona (split payment)
+
+Funkcja jest dostępna dla wywołań transfer (trnRequest, trnDirect, express). By ją aktywować należy ustawić odpowiednią flagę przed wywołaniem transakcji:
+
+```java
+SdkConfig.setSplitPaymentEnabled(true);
+```
 
 ## 2. Wywołanie transakcji trnDirect
 

@@ -82,6 +82,14 @@ P24SdkConfig.setCertificatePinningEnabled(true);
 
  > When activating SSL Pinning, keep in mind that the certificates embedded in the library have their validity time. Before time of their expiry, Przelewy24 will be sending out appropriate information and updating
 
+ ### Split payment
+
+The function is available for transfer calls (trnRequest, trnDirect, express). To activate, use the appropriate flag before the transaction request:
+
+```java
+SdkConfig.setSplitPaymentEnabled(true);
+```
+
 ## 2. trnDirect transaction call
 
 In order to call the transaction, the following parameters must be set using the `P24TransactionParams`, class and providing the Merchant ID and the CRC key:
