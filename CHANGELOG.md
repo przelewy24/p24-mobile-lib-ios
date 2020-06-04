@@ -1,5 +1,8 @@
 ### Version 3.4.4
 - Add isExitOnBackButtonEnabled flag
 
-### Verstion 3.4.5
+### Version 3.4.5
 - Fix bug with ApplePay modal dismiss
+
+### Version 3.5.1
+- Set min supported iOS version to 11.0
