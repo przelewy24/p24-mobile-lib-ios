@@ -6,3 +6,7 @@
 
 ### Version 3.5.1
 - Set min supported iOS version to 11.0
+
+### Version 3.5.2
+- Change UIAlertView to UIAlertController
+
