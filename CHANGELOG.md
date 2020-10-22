@@ -10,3 +10,5 @@
 ### Version 3.5.2
 - Change UIAlertView to UIAlertController
 
+### Version 3.5.3
+- Fixed issue with alert dialog
