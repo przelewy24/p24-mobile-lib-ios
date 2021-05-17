@@ -12,3 +12,7 @@
 
 ### Version 3.5.3
 - Fixed issue with alert dialog
+
+### Version 3.5.10
+- Fixed issue with alert dialog
+- Add xcframework
