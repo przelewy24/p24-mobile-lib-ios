@@ -74,8 +74,7 @@ Dla aplikacji w języku Swift dodać do projektu plik `{PROJECT-NAME}-Bridging-H
 
 ### SSL Pinning
 
-Biblioteka posiada mechanizm SSL Pinningu, który można aktywować globalnie dla wywołań webview.
-Aby funkcja działała należy upewnić się, że przed wywołaniem jakiejkolwiek metody biblioteki jest ona odpowiedno zkonfigurowana. Przykład:
+Biblioteka posiada mechanizm SSL Pinningu, który można aktywować globalnie - aby funkcja działała należy upewnić się, że przed wywołaniem jakiejkolwiek metody biblioteki jest ona odpowiedno skonfigurowana. Przykład:
 
 ```swift
 P24SdkConfig.setCertificatePinningEnabled(true);
