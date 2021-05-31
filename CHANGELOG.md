@@ -16,3 +16,6 @@
 ### Version 3.5.10
 - Fixed issue with alert dialog
 - Add xcframework
+
+### Version 3.5.13
+- Remove .a and .h files
