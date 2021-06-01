@@ -19,3 +19,9 @@
 
 ### Version 3.5.13
 - Remove .a and .h files
+
+### Version 3.5.15
+- Restore .a and .h files files
+
+### Version 3.5.16
+- Update web view progress indicator
