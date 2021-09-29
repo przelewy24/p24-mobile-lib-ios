@@ -34,3 +34,6 @@
 
 ### Version 3.5.25
 - Fix SSL Pinnig for sandbox
+
+### Version 3.5.26
+- Fix problem with API communication
