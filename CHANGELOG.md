@@ -26,8 +26,11 @@
 ### Version 3.5.16
 - Update web view progress indicator
 
+### Version 3.5.17
+- Fix web view progress indicator
+
 ### Version 3.5.22
 - Add new certificates
 
-### Version 3.5.17
-- Fix web view progress indicator
+### Version 3.5.25
+- Fix SSL Pinnig for sandbox
