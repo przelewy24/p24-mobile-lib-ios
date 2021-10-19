@@ -37,3 +37,6 @@
 
 ### Version 3.5.26
 - Fix problem with API communication
+
+## Version 3.5.28
+- Fix Apple Pay exception
