@@ -40,3 +40,6 @@
 
 ## Version 3.5.28
 - Fix Apple Pay exception
+
+# Version 3.5.29
+- Add arm64 simulator support
