@@ -16,41 +16,15 @@ Objective-C i Swift.
 
 ### Dodawanie zależności
 
-Należy dodać pliki biblioteki (`libP24.a`, `P24.h`) do projektu. W tym celu należy:
+Należy dodać bibliotekę (`libP24.xcframework`) do projektu. W tym celu należy:
 
 - wybrać w Xcode „File → Add Files To”
-- wybrać katalog zawierający bibliotekę
-- zaznaczyć opcję „Copy items into destination folder (if needed)”
-- zaznaczyć opcję „Create groups for any added folders”
+- wybrać plik biblioteki
+- zaznaczyć opcję „Copy items if needed”
+- zaznaczyć opcję „Create groups”
 - w polu „Add to targets” wybrać wszystkie elementy, do których ma zostać dodana biblioteka
 
-Należy upewnić się, czy ustawienia Targetów zostały poprawnie zaktualizowane. Plik `libP24.a` powinien zostać automatycznie dopisany w polu „Link Binary With Libraries” w zakładce „Build Phases”. W tym celu należy:
-
-- wybrać projekt w “Project Navigator”
-- wybrać Target, w którym ma być używana biblioteka
-- wybrać zakładkę “Build Phases”
-- wybrać sekcję “Link Binary With Libraries”
-- jeżeli plik `libP24.a` nie znajduje się na liście, należy przeciągnąć go z okna “Project Navigator”
-- powtórzyć powyższe kroki dla wszystkich Targetów, w których ma być wykorzystywana biblioteka
-
-Należy dodać do Targetu wymagane biblioteki systemowe. Wymagane są następujące biblioteki:
-
-- Security.Framework
-- UIKit.Framework
-- Foundation.Framework
-- libz
-- WebKit
-- PassKit
-
-Biblioteki te należy dodać do sekcji „Link Binary With Libraries” w zakładce „Build Phases”. Należy wykonać to dla każdego Targetu, w którym będzie wykorzystywana biblioteka.
-
 ### Przygotowanie projektu
-
-Należy dodać flagi „-ObjC” i „-lstdc++” w polu „Other Linker Flags” w ustawieniach Targetu. W tym celu należy:
-
-- wybrać zakładkę „Build Settings” w ustawieniach Targetu
-- ustawić wartość pola „Other Linker Flags” na „-ObjC -lstdc++”. Pole „Other Linker Flags” znajduje się w sekcji „Linking”
-- powyższe kroki należy powtórzyć dla każdego Targetu, w którym biblioteka będzie wykorzystywana
 
 Należy dodać poniższe ustawienie do pliku konfiguracyjnego `Info.plist` aplikacji:
 
@@ -60,12 +34,6 @@ Należy dodać poniższe ustawienie do pliku konfiguracyjnego `Info.plist` aplik
  	<key>NSAllowsArbitraryLoadsInWebContent</key>
  	<true/>
 </dict>
-```
-
-Dla aplikacji w języku Swift dodać do projektu plik `{PROJECT-NAME}-Bridging-Header.h`. W zakładce „Build Settings” projektu w polu „Objective-C Bridging Header” wpisać ścieżkę do utworzonego pliku (np. `{PROJECT-NAME}/{PROJECT-NAME}-Bridging-Header.h`). Wpisać w utworzonym pliku import do pliku `P24.h`:
-
-```swift
-#import "P24.h"
 ```
 
 **UWAGA!!**

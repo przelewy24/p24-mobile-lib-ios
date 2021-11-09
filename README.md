@@ -13,41 +13,15 @@ In project Xcode settings set „iOS Deployment Target” ( „Info” project s
 
 ### Adding dependencies
 
-Library files (`libP24.a`, `P24.h`) should be added to the project. In order to add them, perform the following:
+Library file (`libP24.xcframework`) should be added to the project. In order to add them, perform the following:
 
 - select „File → Add Files To” in Xcode
-- select the folder containing the library
-- select option „Copy items into destination folder (if needed)”
-- select option „Create groups for any added folders”
+- select library file
+- select option „Copy items if needed"
+- select option „Create groups”
 - in the field „Add to targets” select all the elements to which a library can be added
 
-Make sure that the Target settings have been updated properly. File `libP24.a` should be added automatically in the field „Link Binary With Libraries”, bookmark „Build Phases”. In order to check that, perform the following:
-
-- select project in “Project Navigator”
-- select the Target in which the library is to be used
-- select bookmark “Build Phases”
-- select section “Link Binary With Libraries”
-- if file`libP24.a` is not on the list, drag it from the “Project Navigator” window
-- repeat the steps above for all the Targets in which a library is to be used
-
-The following libraries are required and must be added to the Target:
-
-- Security.Framework
-- UIKit.Framework
-- Foundation.Framework
-- libz
-- WebKit
-- PassKit
-
-The above libraries must be added in section „Link Binary With Libraries”, bookmark „Build Phases”. The operation must be performed for each Target in which a library is to be used.
-
 ### Preparation of project
-
-Add flags „-ObjC” i „-lstdc++” in field „Other Linker Flags” in Target settings. In order to add them, perform the following:
-
-- select bookmark „Build Settings” in Target settings
-- set field value „Other Linker Flags” to „-ObjC -lstdc++”. Field „Other Linker Flags” is in the „Linking” section
-- The steps above must be performed for each Target in which a library is to be used.
 
 Add the setting below to the configurational file `Info.plist`  of the application:
 
@@ -57,12 +31,6 @@ Add the setting below to the configurational file `Info.plist`  of the applicati
  	<key>NSAllowsArbitraryLoadsInWebContent</key>
  	<true/>
 </dict>
-```
-
-For applications in Swift, add file `{PROJECT-NAME}-Bridging-Header.h` to the project. In the project bookmark „Build Settings”, field „Objective-C Bridging Header”, enter the access path to the created file  (e.g.  `{PROJECT-NAME}/{PROJECT-NAME}-Bridging-Header.h`). In the created file enter import to file `P24.h`:
-
-```swift
-#import "P24.h"
 ```
 
 **NOTE!**
