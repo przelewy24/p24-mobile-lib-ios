@@ -38,11 +38,14 @@
 ### Version 3.5.26
 - Fix problem with API communication
 
-## Version 3.5.28
+### Version 3.5.28
 - Fix Apple Pay exception
 
-## Version 3.5.29
+### Version 3.5.29
 - Add arm64 simulator support
 
-## Version 3.5.30
+### Version 3.5.30
 - Fix issue with blank page
+
+### Version 3.5.31
+- Code optimization
