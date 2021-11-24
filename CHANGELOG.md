@@ -49,3 +49,6 @@
 
 ### Version 3.5.31
 - Code optimization
+
+### Version 3.5.32
+- Bitcode fix
