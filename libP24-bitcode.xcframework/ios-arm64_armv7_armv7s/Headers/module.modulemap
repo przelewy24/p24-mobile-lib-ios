@@ -1,4 +1,0 @@
-module P24 {
-    umbrella header "P24.h"
-    export *
-}
