@@ -52,3 +52,6 @@
 
 ### Version 3.5.32
 - Bitcode fix
+
+### Version 3.5.33
+- Change navigation item color
