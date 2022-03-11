@@ -55,3 +55,6 @@
 
 ### Version 3.5.33
 - Change navigation item color
+
+### Version 3.5.34
+- Minor fixes
