@@ -58,3 +58,6 @@
 
 ### Version 3.5.34
 - Minor fixes
+
+### Version 3.5.38
+- Update certs
