@@ -61,3 +61,6 @@
 
 ### Version 3.5.38
 - Update certs
+
+### Version 3.5.39
+- Minor fixes in split payment
