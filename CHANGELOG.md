@@ -64,3 +64,6 @@
 
 ### Version 3.5.39
 - Minor fixes in split payment
+
+### Version 3.5.40
+- Handle iframe error
