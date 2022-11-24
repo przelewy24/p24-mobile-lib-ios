@@ -67,3 +67,6 @@
 
 ### Version 3.5.40
 - Handle iframe error
+
+## Version 3.5.41
+- Dismiss progress bar when iframe interrupted
