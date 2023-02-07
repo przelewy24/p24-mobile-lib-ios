@@ -70,3 +70,7 @@
 
 ## Version 3.5.41
 - Dismiss progress bar when iframe interrupted
+
+## Version 3.5.43
+- Add possibility to override back button
+- Use app language instead system language
