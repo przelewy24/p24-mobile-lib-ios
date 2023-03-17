@@ -271,3 +271,5 @@ func p24ApplePay(onError errorCode: String!) {
     // handle transaction error
 }
 ```
+
+W przypadku kiedy chcemy, by tło procesu płatności było transparentne, podczas inicjacji obiektu `P24ApplePayParams` należy przekazać parametr `fullscreen` z wartością ustawioną na true

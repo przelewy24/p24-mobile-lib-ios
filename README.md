@@ -270,3 +270,5 @@ func p24ApplePay(onError errorCode: String!) {
     // handle transaction error
 }
 ```
+
+If we want the background of the payment process to be transparent, wee need init `P24ApplePayParams` object with `fullscreen` parameter value set to true
