@@ -74,3 +74,6 @@
 ## Version 3.5.43
 - Add possibility to override back button
 - Use app language instead system language
+
+## Version 3.5.44
+- Update certs
