@@ -77,3 +77,6 @@
 
 ## Version 3.5.44
 - Update certs
+
+## Version 3.5.45
+- Update certs
