@@ -80,3 +80,6 @@
 
 ## Version 3.5.45
 - Update certs
+
+## Version 3.5.47
+- Minor fixes
