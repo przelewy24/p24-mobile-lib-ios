@@ -83,3 +83,6 @@
 
 ## Version 3.5.47
 - Minor fixes
+
+## Version 3.5.48
+- Add Apple Pay logs
