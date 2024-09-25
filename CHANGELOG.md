@@ -86,3 +86,6 @@
 
 ## Version 3.5.48
 - Add Apple Pay logs
+
+## Version 3.5.49
+- Disable bitcode
