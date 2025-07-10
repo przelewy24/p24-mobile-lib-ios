@@ -89,3 +89,6 @@
 
 ## Version 3.5.49
 - Disable bitcode
+
+## Version 3.5.50
+- Update certs for SSL Pinning
