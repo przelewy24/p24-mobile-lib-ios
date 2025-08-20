@@ -13,8 +13,29 @@ In project Xcode settings set „iOS Deployment Target” ( „Info” project s
 
 ### Adding dependencies
 
-Library file (`libP24.xcframework`) should be added to the project. In order to add them, perform the following:
+#### Swift Package Manager Integration
+The library can be easily integrated using Swift Package Manager. To add the Przelewy24 library to your project:
 
+1. In Xcode, select **File > Add Package Dependencies**
+2. Enter the repository URL: `https://github.com/przelewy24/p24-mobile-lib-ios`
+3. Select the version rule that fits your needs (recommended: "Up to Next Major Version")
+4. Add the package to your target named **P24**
+
+Alternatively, you can add the dependency directly in your `Package.swift` file:
+```swift
+dependencies: [
+    .package(url: "https://github.com/przelewy24/p24-mobile-lib-ios", from: "3.x.x")
+],
+targets: [
+    .target(
+        name: "YourTarget",
+        dependencies: ["P24"]
+    )
+]
+```
+
+#### Manual integration
+Library file `libP24.xcframework`) should be added to the project. In order to add them, perform the following:
 - select „File → Add Files To” in Xcode
 - select library file
 - select option „Copy items if needed"
