@@ -92,3 +92,6 @@
 
 ## Version 3.5.50
 - Update certs for SSL Pinning
+
+## Version 3.5.51
+- Bugfix for SSL Pinning
