@@ -95,3 +95,6 @@
 
 ## Version 3.5.51
 - Bugfix for SSL Pinning
+
+## Version 3.5.52
+- Bugfix for certificates handling in Apple Pay
